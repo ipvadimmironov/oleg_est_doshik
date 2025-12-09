@@ -5,6 +5,7 @@ const VIRTUAL_HEIGHT = 1920;
 // Конфиг картинок (из папки assets/firstScreen):
 // src — путь, duration — сколько мс кадр показывается (для анимаций)
 const IMAGE_CONFIG = [
+  { src: 'assets/firstScreen/background.png', duration: 0 },
   { src: 'assets/firstScreen/back1.png', duration: 0 },
   { src: 'assets/firstScreen/back2.png', duration: 750 },
   { src: 'assets/firstScreen/back3.png', duration: 1250 },

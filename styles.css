@@ -23,16 +23,23 @@ body {
   inset: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: #000;
+  align-items: flex-start;
+  background-color: transparent;
   overflow: hidden;
+}
+
+#game-root {
+  background-image: url('assets/firstScreen/background.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 #game-canvas {
   position: relative;
   width: 1080px;
   height: 1920px;
-  background: #000;
+  background-color: transparent;
   overflow: hidden;
 }
 
