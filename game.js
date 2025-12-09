@@ -24,7 +24,9 @@ const IMAGE_CONFIG = [
   { src: 'assets/firstScreen/back-selected-2-4.png', duration: 50 },
   { src: 'assets/firstScreen/back-selected-2-5.png', duration: 50 },
   { src: 'assets/firstScreen/back-selected-2-6.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-2-7.png', duration: 50 }
+  { src: 'assets/firstScreen/back-selected-2-7.png', duration: 50 },
+  // gif after too many swipes
+  { src: 'assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif', duration: 0 }
 ];
 
 // Прямоугольники клика по бойцам в системе координат 1080x1920
@@ -55,6 +57,8 @@ let touchStartY = 0;
 let touchStartTime = 0;
 let lastInteractionWasSwipe = false;
 const SWIPE_DISTANCE_PX = 40;
+let swipeCount = 0;
+let banGifShown = false;
 
 function $(id) {
   return document.getElementById(id);
@@ -148,7 +152,7 @@ function setScreen(name) {
   }
 }
 
-function spawnSwipeBubble(virtualX) {
+function spawnSwipeBubble(virtualX, customText) {
   const canvas = $('game-canvas');
   if (!canvas) return;
 
@@ -156,7 +160,11 @@ function spawnSwipeBubble(virtualX) {
   bubble.className = 'swipe-bubble';
 
   const text =
-    Math.random() < 0.3 ? 'тыкай, а не свайпай' : 'хули свайпаешь';
+    typeof customText === 'string'
+      ? customText
+      : Math.random() < 0.3
+      ? 'тыкай, а не свайпай'
+      : 'хули свайпаешь';
   bubble.textContent = text;
 
   // Переводим координату в проценты и ограничиваем, чтобы не уехало за края
@@ -258,6 +266,21 @@ function playFighterSelection(fighterIndex) {
   showNextFrame();
 }
 
+function showBanGif() {
+  const base = $('layer-base');
+  const ov1 = $('layer-overlay-1');
+  const ov2 = $('layer-overlay-2');
+
+  if (!base || !ov1 || !ov2) return;
+
+  clearLayers();
+  base.src = 'assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif';
+  base.style.opacity = '1';
+
+  // Блокируем дальнейшие анимации выбора
+  isAnimating = true;
+}
+
 function isPointInRect(x, y, rect) {
   return x >= rect.x1 && x <= rect.x2 && y >= rect.y1 && y <= rect.y2;
 }
@@ -328,6 +351,13 @@ function initGame() {
           const virtualX = (relX / rect.width) * VIRTUAL_WIDTH;
 
           spawnSwipeBubble(virtualX);
+
+          // Считаем свайпы и при превышении порога показываем gif
+          swipeCount += 1;
+          if (swipeCount > 10 && !banGifShown) {
+            banGifShown = true;
+            showBanGif();
+          }
 
           event.preventDefault();
         }
