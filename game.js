@@ -4,29 +4,35 @@ const VIRTUAL_HEIGHT = 1920;
 
 // Конфиг картинок (из папки assets/firstScreen):
 // src — путь, duration — сколько мс кадр показывается (для анимаций)
+const CACHE_BUST = Date.now();
+
+function withCacheBust(path) {
+  return `${path}?v=${CACHE_BUST}`;
+}
+
 const IMAGE_CONFIG = [
-  { src: 'assets/firstScreen/background.png', duration: 0 },
-  { src: 'assets/firstScreen/back1.png', duration: 0 },
-  { src: 'assets/firstScreen/back2.png', duration: 750 },
-  { src: 'assets/firstScreen/back3.png', duration: 1250 },
+  { src: withCacheBust('assets/firstScreen/background.png'), duration: 0 },
+  { src: withCacheBust('assets/firstScreen/back1.png'), duration: 0 },
+  { src: withCacheBust('assets/firstScreen/back2.png'), duration: 750 },
+  { src: withCacheBust('assets/firstScreen/back3.png'), duration: 1250 },
   // fighter 1
-  { src: 'assets/firstScreen/back-selected-1-1.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-1-2.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-1-3.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-1-4.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-1-5.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-1-6.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-1-7.png', duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-1.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-2.png'), duration: 150 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-3.png'), duration: 150 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-4.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-5.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-6.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-7.png'), duration: 50 },
   // fighter 2
-  { src: 'assets/firstScreen/back-selected-2-1.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-2-2.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-2-3.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-2-4.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-2-5.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-2-6.png', duration: 50 },
-  { src: 'assets/firstScreen/back-selected-2-7.png', duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-1.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-2.png'), duration: 150 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-3.png'), duration: 150 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-4.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-5.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-6.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-7.png'), duration: 50 },
   // gif after too many swipes
-  { src: 'assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif', duration: 0 }
+  { src: withCacheBust('assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif'), duration: 0 }
 ];
 
 // Прямоугольники клика по бойцам в системе координат 1080x1920
@@ -199,9 +205,9 @@ function playIntroSequence() {
   if (!base || !ov1 || !ov2) return;
 
   // Сразу показываем back1
-  const srcBack1 = 'assets/firstScreen/back1.png';
-  const srcBack2 = 'assets/firstScreen/back2.png';
-  const srcBack3 = 'assets/firstScreen/back3.png';
+  const srcBack1 = withCacheBust('assets/firstScreen/back1.png');
+  const srcBack2 = withCacheBust('assets/firstScreen/back2.png');
+  const srcBack3 = withCacheBust('assets/firstScreen/back3.png');
 
   base.src = srcBack1;
   base.style.opacity = '1';
@@ -233,13 +239,13 @@ function playFighterSelection(fighterIndex) {
   }
 
   const frames = [
-    `assets/firstScreen/back-selected-${fighterIndex}-1.png`,
-    `assets/firstScreen/back-selected-${fighterIndex}-2.png`,
-    `assets/firstScreen/back-selected-${fighterIndex}-3.png`,
-    `assets/firstScreen/back-selected-${fighterIndex}-4.png`,
-    `assets/firstScreen/back-selected-${fighterIndex}-5.png`,
-    `assets/firstScreen/back-selected-${fighterIndex}-6.png`,
-    `assets/firstScreen/back-selected-${fighterIndex}-7.png`
+    withCacheBust(`assets/firstScreen/back-selected-${fighterIndex}-1.png`),
+    withCacheBust(`assets/firstScreen/back-selected-${fighterIndex}-2.png`),
+    withCacheBust(`assets/firstScreen/back-selected-${fighterIndex}-3.png`),
+    withCacheBust(`assets/firstScreen/back-selected-${fighterIndex}-4.png`),
+    withCacheBust(`assets/firstScreen/back-selected-${fighterIndex}-5.png`),
+    withCacheBust(`assets/firstScreen/back-selected-${fighterIndex}-6.png`),
+    withCacheBust(`assets/firstScreen/back-selected-${fighterIndex}-7.png`)
   ];
 
   let frameIndex = 0;
@@ -274,7 +280,9 @@ function showBanGif() {
   if (!base || !ov1 || !ov2) return;
 
   clearLayers();
-  base.src = 'assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif';
+  base.src = withCacheBust(
+    'assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif'
+  );
   base.style.opacity = '1';
 
   // Блокируем дальнейшие анимации выбора
