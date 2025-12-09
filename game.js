@@ -48,6 +48,13 @@ let isImagesLoaded = false;
 let currentScreen = 'select'; // 'select' | 'game'
 let isAnimating = false;
 
+// Для отслеживания свайпов
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
+let lastInteractionWasSwipe = false;
+const SWIPE_DISTANCE_PX = 40;
+
 function $(id) {
   return document.getElementById(id);
 }
@@ -138,6 +145,29 @@ function setScreen(name) {
   if (game) {
     game.classList.toggle('screen--active', name === 'game');
   }
+}
+
+function spawnSwipeBubble(virtualX) {
+  const canvas = $('game-canvas');
+  if (!canvas) return;
+
+  const bubble = document.createElement('div');
+  bubble.className = 'swipe-bubble';
+
+  const text =
+    Math.random() < 0.3 ? 'тыкай, а не свайпай' : 'хули свайпаешь';
+  bubble.textContent = text;
+
+  // Переводим координату в проценты и ограничиваем, чтобы не уехало за края
+  const leftPercent = (virtualX / VIRTUAL_WIDTH) * 100;
+  const clamped = Math.max(10, Math.min(90, leftPercent));
+  bubble.style.left = clamped + '%';
+
+  canvas.appendChild(bubble);
+
+  bubble.addEventListener('animationend', () => {
+    bubble.remove();
+  });
 }
 
 function clearLayers() {
@@ -232,6 +262,12 @@ function isPointInRect(x, y, rect) {
 }
 
 function handleCanvasClick(event) {
+  if (lastInteractionWasSwipe) {
+    // Игнорируем синтетический клик после свайпа
+    lastInteractionWasSwipe = false;
+    return;
+  }
+
   if (currentScreen !== 'select' || isAnimating) return;
 
   const canvas = $('game-canvas');
@@ -260,6 +296,43 @@ function initGame() {
 
   if (canvas) {
     canvas.addEventListener('click', handleCanvasClick);
+
+    canvas.addEventListener(
+      'touchstart',
+      (event) => {
+        if (event.touches.length === 0) return;
+        const t = event.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchStartTime = Date.now();
+        lastInteractionWasSwipe = false;
+      },
+      { passive: true }
+    );
+
+    canvas.addEventListener(
+      'touchend',
+      (event) => {
+        if (event.changedTouches.length === 0) return;
+        const t = event.changedTouches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist >= SWIPE_DISTANCE_PX) {
+          lastInteractionWasSwipe = true;
+
+          const rect = canvas.getBoundingClientRect();
+          const relX = t.clientX - rect.left;
+          const virtualX = (relX / rect.width) * VIRTUAL_WIDTH;
+
+          spawnSwipeBubble(virtualX);
+
+          event.preventDefault();
+        }
+      },
+      { passive: false }
+    );
   }
 
   if (backButton) {

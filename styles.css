@@ -36,6 +36,31 @@ body {
   overflow: hidden;
 }
 
+.swipe-bubble {
+  position: absolute;
+  bottom: -20%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #000;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: bubble-up 2.5s linear forwards;
+}
+
+@keyframes bubble-up {
+  from {
+    bottom: -20%;
+    opacity: 1;
+  }
+  to {
+    bottom: 110%;
+    opacity: 1;
+  }
+}
+
 .screen {
   position: absolute;
   inset: 0;
