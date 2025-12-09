@@ -10,7 +10,7 @@ const IMAGE_CONFIG = [
   { src: 'assets/firstScreen/back2.png', duration: 750 },
   { src: 'assets/firstScreen/back3.png', duration: 1250 },
   // fighter 1
-  { src: 'assets/firstScreen/back-selected-1-1.png', duration: 150 },
+  { src: 'assets/firstScreen/back-selected-1-1.png', duration: 50 },
   { src: 'assets/firstScreen/back-selected-1-2.png', duration: 150 },
   { src: 'assets/firstScreen/back-selected-1-3.png', duration: 150 },
   { src: 'assets/firstScreen/back-selected-1-4.png', duration: 50 },
@@ -18,13 +18,13 @@ const IMAGE_CONFIG = [
   { src: 'assets/firstScreen/back-selected-1-6.png', duration: 50 },
   { src: 'assets/firstScreen/back-selected-1-7.png', duration: 50 },
   // fighter 2
-  { src: 'assets/firstScreen/back-selected-2-1.png', duration: 150 },
+  { src: 'assets/firstScreen/back-selected-2-1.png', duration: 50 },
   { src: 'assets/firstScreen/back-selected-2-2.png', duration: 150 },
   { src: 'assets/firstScreen/back-selected-2-3.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-2-4.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-2-5.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-2-6.png', duration: 150 },
-  { src: 'assets/firstScreen/back-selected-2-7.png', duration: 150 }
+  { src: 'assets/firstScreen/back-selected-2-4.png', duration: 50 },
+  { src: 'assets/firstScreen/back-selected-2-5.png', duration: 50 },
+  { src: 'assets/firstScreen/back-selected-2-6.png', duration: 50 },
+  { src: 'assets/firstScreen/back-selected-2-7.png', duration: 50 }
 ];
 
 // Прямоугольники клика по бойцам в системе координат 1080x1920
