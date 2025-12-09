@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Choose Your Fighter</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="orientation-overlay" class="overlay overlay--orientation">
+      <div class="overlay__content">
+        <p>переверни телефон, сука, за адаптив не занесли</p>
+      </div>
+    </div>
+
+    <div id="game-root">
+      <div id="loader-overlay" class="overlay overlay--loader">
+        <div class="overlay__content">
+          <div class="loader-spinner"></div>
+          <p id="loader-text">Загрузка...</p>
+        </div>
+      </div>
+
+      <div id="game-canvas">
+        <!-- Экран 1: выбор бойца -->
+        <div id="screen-select" class="screen screen--active">
+          <img id="layer-base" class="layer" alt="background layer" />
+          <img id="layer-overlay-1" class="layer" alt="overlay layer 1" />
+          <img id="layer-overlay-2" class="layer" alt="overlay layer 2" />
+        </div>
+
+        <!-- Экран 2: заглушка игры -->
+        <div id="screen-game" class="screen">
+          <div class="game-stub">
+            <div class="game-stub__title">игра</div>
+            <button id="back-to-select" class="game-stub__back">
+              назад к выбору бойца
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>
+
+
