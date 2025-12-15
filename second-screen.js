@@ -241,6 +241,7 @@
 
     let endModal = null;
     let endOverlayClickHandler = null;
+    let allowManualEndModal = false;
 
     function openEndModal() {
       if (endModal) {
@@ -346,7 +347,9 @@
       if (!screenEl || endOverlayClickHandler) return;
 
       endOverlayClickHandler = () => {
-        openEndModal();
+        if (allowManualEndModal) {
+          openEndModal();
+        }
       };
       screenEl.addEventListener('click', endOverlayClickHandler);
     }
@@ -377,7 +380,14 @@
       }
 
       setImageSrc(bottomImg, BUTTON_WIN);
+
+      // Сначала ждём 3 секунды и автоматически показываем модалку,
+      // а уже после этого разрешаем ручной вызов по клику.
       enableEndOverlayClick();
+      setTimeout(() => {
+        openEndModal();
+        allowManualEndModal = true;
+      }, 3000);
     }
 
     function addPlayerPoint() {
