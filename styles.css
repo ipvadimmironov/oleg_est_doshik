@@ -10,12 +10,24 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: 100%;
+  /* Отключаем дабл-тап зум и лишние жесты на мобилках */
+  touch-action: manipulation;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+img,
+button {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+button:focus {
+  outline: none;
 }
 
 #game-root {
@@ -150,6 +162,123 @@ body {
 
 .game-stub__back:active {
   transform: scale(0.96);
+}
+
+.second-screen {
+  position: relative;
+  background-color: #121c2e;
+}
+
+.second-layout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(50%);
+  width: 100%;
+  /* Высота считается автоматически по ширине через aspect-ratio,
+     чтобы сетка масштабировалась пропорционально */
+  aspect-ratio: 1080 / 1023;
+
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30%;
+  transform: translateY(30%);
+  width: 100%;
+  aspect-ratio: 1080 / 1223;
+}
+
+.second-topbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 10.97%; /* ≈ 112.5 / 1023, под иконки 2.5x */
+  display: flex;
+  align-items: center;
+  padding: 0 2.5926%; /* те же 28px отступа, что и у портретов */
+  box-sizing: border-box;
+}
+
+.second-topbar-left,
+.second-topbar-right {
+  display: flex;
+  gap: 1.157%; /* ~12.5 / 1080, 2.5x шире */
+  flex: 1;
+}
+
+.second-topbar-left {
+  justify-content: flex-start;
+}
+
+.second-topbar-right {
+  justify-content: flex-end;
+}
+
+.second-topbar-icon {
+  width: 10.4167%; /* 112.5 / 1080 ≈ 2.5x больше */
+  aspect-ratio: 1 / 1;
+}
+
+.second-progress-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10.97%; /* сразу под иконками */
+  height: 0.78%; /* ≈ 8 / 1023, толще прогресс-бар */
+  display: flex;
+}
+
+.second-progress {
+  flex: 1;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.second-progress__inner {
+  height: 100%;
+  width: 0;
+  background: #ffffff;
+}
+
+.second-progress--left .second-progress__inner {
+  background: #ff4b4b; /* красный для левого игрока */
+}
+
+.second-progress--right .second-progress__inner {
+  margin-left: auto;
+  background: #3bd46a; /* зелёный для правого игрока */
+}
+
+.second-slot {
+  position: absolute;
+  object-fit: cover;
+}
+
+.second-slot--left {
+  left: 2.5926%; /* 28 / 1080 */
+  top: 12.5%; /* под более высокой полоской и прогрессом */
+  width: 47.4074%; /* 512 / 1080 */
+  /* Соотношение сторон картинки 512x569 */
+  aspect-ratio: 512 / 569;
+}
+
+.second-slot--right {
+  right: 2.5926%; /* симметричный отступ справа */
+  top: 12.5%;
+  width: 47.4074%;
+  aspect-ratio: 512 / 569;
+}
+
+.second-slot--bottom {
+  left: 2.5926%; /* 28 / 1080 */
+  bottom: 0;
+  width: 94.8148%; /* 1024 / 1080 */
+  /* Соотношение сторон нижнего блока 1024x454 */
+  aspect-ratio: 1024 / 454;
 }
 
 @media (orientation: landscape) {

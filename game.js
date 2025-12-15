@@ -36,21 +36,20 @@ const IMAGE_CONFIG = [
 ];
 
 // Прямоугольники клика по бойцам в системе координат 1080x1920
-// Подправите по фактическим макетам.
+// Подправлены под фактические макеты.
 const FIGHTER_ZONE_TOP = {
-  x1: 200,
-  x2: 880,
-  y1: 350,
-  y2: 850
+  x1: 100,
+  x2: 980,
+  y1: 550,
+  y2: 1150
 };
 
 const FIGHTER_ZONE_BOTTOM = {
-  x1: 200,
-  x2: 880,
-  y1: 1070,
-  y2: 1570
+  x1: 100,
+  x2: 980,
+  y1: 1151,
+  y2: 1770
 };
-
 let loadedImages = {};
 let isImagesLoaded = false;
 
@@ -65,6 +64,7 @@ let lastInteractionWasSwipe = false;
 const SWIPE_DISTANCE_PX = 40;
 let swipeCount = 0;
 let banGifShown = false;
+let secondScreenLoaded = false;
 
 function $(id) {
   return document.getElementById(id);
@@ -101,15 +101,9 @@ function resizeGameCanvas() {
 
 function updateOrientationOverlay() {
   const overlay = $('orientation-overlay');
-  const isLandscape = window.innerWidth > window.innerHeight;
-
   if (!overlay) return;
-
-  if (isLandscape) {
-    overlay.style.display = 'flex';
-  } else {
-    overlay.style.display = 'none';
-  }
+  // Проверку на landscape отключили — оверлей всегда скрыт
+  overlay.style.display = 'none';
 }
 
 function preloadImages(files, onProgress, onDone) {
@@ -254,7 +248,7 @@ function playFighterSelection(fighterIndex) {
     if (frameIndex >= frames.length) {
       // Небольшая пауза и переходим на второй экран
       setTimeout(() => {
-        setScreen('game');
+        showGameIntro(fighterIndex);
         isAnimating = false;
       }, 150);
       return;
@@ -270,6 +264,87 @@ function playFighterSelection(fighterIndex) {
   }
 
   showNextFrame();
+}
+
+function startSecondScreen() {
+  const game = $('screen-game');
+  if (game) {
+    game.innerHTML = '';
+    game.style.backgroundColor = '';
+  }
+
+  if (!secondScreenLoaded) {
+    secondScreenLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'second-screen.js?v=' + Date.now();
+    document.body.appendChild(s);
+  } else if (typeof window.initSecondScreen === 'function') {
+    window.initSecondScreen();
+  }
+}
+
+function showGameIntro(fighterIndex) {
+  const game = $('screen-game');
+  if (!game) return;
+
+  // Сохраняем выбор бойца для второго экрана
+  window.selectedFighter = fighterIndex;
+
+  // Сброс содержимого и оформление под интро
+  game.innerHTML = '';
+  game.style.backgroundColor = '#000';
+
+  const container = document.createElement('div');
+  container.style.position = 'absolute';
+  container.style.inset = '0';
+  container.style.display = 'flex';
+  container.style.flexDirection = 'column';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'center';
+  container.style.color = '#fff';
+  container.style.textAlign = 'center';
+  container.style.padding = '24px';
+  container.style.fontFamily =
+    "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+  const text = document.createElement('div');
+  text.style.fontSize = '28px';
+  text.style.maxWidth = '800px';
+  text.style.marginBottom = '32px';
+
+  if (fighterIndex === 1) {
+    text.textContent =
+      'Ваша задача проверить пять резюме быстрее, чем Олег съест пять дошиков. Жмите на кнопки «пыщь» и «дыщь».';
+  } else {
+    text.textContent =
+      'Ваша задача съесть пять дошиков быстрее, чем Аня проверит пять резюме. Жмите на кнопки «пыщь» и «дыщь».';
+  }
+
+  const countdown = document.createElement('div');
+  countdown.style.fontSize = '64px';
+  countdown.style.fontWeight = 'bold';
+
+  container.appendChild(text);
+  container.appendChild(countdown);
+  game.appendChild(container);
+
+  setScreen('game');
+
+  const readDelay = 3000;
+  setTimeout(() => {
+    let value = 3;
+    countdown.textContent = String(value);
+
+    const timer = setInterval(() => {
+      value -= 1;
+      if (value <= 0) {
+        clearInterval(timer);
+        startSecondScreen();
+      } else {
+        countdown.textContent = String(value);
+      }
+    }, 1000);
+  }, readDelay);
 }
 
 function showBanGif() {
