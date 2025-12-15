@@ -188,7 +188,7 @@ button:focus {
   left: 0;
   right: 0;
   top: 30%;
-  transform: translateY(30%);
+  transform: translateY(10%);
   width: 100%;
   aspect-ratio: 1080 / 1223;
 }
