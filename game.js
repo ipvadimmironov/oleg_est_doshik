@@ -271,6 +271,8 @@ function startSecondScreen() {
   if (game) {
     game.innerHTML = '';
     game.style.backgroundColor = '';
+    // Разрешаем повторную инициализацию второго экрана для новой игры
+    game.dataset.initialized = '';
   }
 
   if (!secondScreenLoaded) {
@@ -426,7 +428,7 @@ function initGame() {
         const dy = t.clientY - touchStartY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist >= SWIPE_DISTANCE_PX) {
+        if (dist >= SWIPE_DISTANCE_PX && currentScreen === 'select') {
           lastInteractionWasSwipe = true;
 
           const rect = canvas.getBoundingClientRect();
@@ -491,5 +493,12 @@ if (document.readyState === 'loading') {
 } else {
   initGame();
 }
+
+// Глобальный хелпер для перезапуска игры со второго экрана
+window.backToSelect = function () {
+  setScreen('select');
+  isAnimating = false;
+  playIntroSequence();
+};
 
 

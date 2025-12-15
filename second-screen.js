@@ -239,6 +239,118 @@
       cpuAnimTimer = null;
     }
 
+    let endModal = null;
+    let endOverlayClickHandler = null;
+
+    function openEndModal() {
+      if (endModal) {
+        endModal.style.display = 'flex';
+        return;
+      }
+
+      const screenEl = document.getElementById('screen-game');
+      if (!screenEl) return;
+
+      const overlay = document.createElement('div');
+      overlay.style.position = 'absolute';
+      overlay.style.inset = '0';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'flex-start';
+      overlay.style.justifyContent = 'center';
+      overlay.style.zIndex = '200';
+
+      const box = document.createElement('div');
+      box.style.backgroundColor = '#121c2e';
+      box.style.border = '2px solid #fff';
+      box.style.borderRadius = '12px';
+      box.style.padding = '24px 16px';
+      box.style.minWidth = '260px';
+      box.style.maxWidth = '320px';
+      box.style.display = 'flex';
+      box.style.flexDirection = 'column';
+      box.style.gap = '12px';
+      box.style.color = '#fff';
+      box.style.fontFamily =
+        "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      box.style.textAlign = 'center';
+      box.style.marginTop = '400px';
+
+      function makeButton(label) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = label;
+        btn.style.padding = '10px 14px';
+        btn.style.borderRadius = '999px';
+        btn.style.border = 'none';
+        btn.style.cursor = 'pointer';
+        btn.style.fontSize = '14px';
+        btn.style.backgroundColor = '#1f6feb';
+        btn.style.color = '#fff';
+        btn.style.whiteSpace = 'normal';
+        btn.style.wordBreak = 'keep-all';
+        btn.addEventListener('click', (e) => e.stopPropagation());
+        return btn;
+      }
+
+      const btnCourse = makeButton('Курс GO Прорвёмся');
+      btnCourse.addEventListener('click', () => {
+        window.open('https://clck.ru/3QgbhP', '_blank');
+      });
+
+      const btnBought = makeButton('Я уже купил курс');
+      btnBought.addEventListener('click', () => {
+        // У обоих персонажей победная картинка
+        setImageSrc(leftImg, LEFT_WIN);
+        setImageSrc(rightImg, RIGHT_WIN);
+
+        // Полностью останавливаем анимации и таймеры до следующей игры
+        stopPlayerAnimation();
+        stopCpuAnimation();
+        if (cpuTimer) {
+          clearInterval(cpuTimer);
+          cpuTimer = null;
+        }
+
+        overlay.style.display = 'none';
+      });
+
+      const btnAuthor = makeButton('Автор игры: Вадим Миронов');
+      btnAuthor.addEventListener('click', () => {
+        window.open('https://t.me/ipVadimMironov', '_blank');
+      });
+
+      const btnAgain = makeButton('Играть ещё');
+      btnAgain.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        if (window.backToSelect) {
+          window.backToSelect();
+        } else {
+          window.location.reload();
+        }
+      });
+
+      box.appendChild(btnCourse);
+      box.appendChild(btnBought);
+      box.appendChild(btnAuthor);
+      box.appendChild(btnAgain);
+
+      overlay.appendChild(box);
+      screenEl.appendChild(overlay);
+
+      endModal = overlay;
+    }
+
+    function enableEndOverlayClick() {
+      const screenEl = document.getElementById('screen-game');
+      if (!screenEl || endOverlayClickHandler) return;
+
+      endOverlayClickHandler = () => {
+        openEndModal();
+      };
+      screenEl.addEventListener('click', endOverlayClickHandler);
+    }
+
     function finishGame(winner) {
       if (gameOver) return;
       gameOver = true;
@@ -265,6 +377,7 @@
       }
 
       setImageSrc(bottomImg, BUTTON_WIN);
+      enableEndOverlayClick();
     }
 
     function addPlayerPoint() {
