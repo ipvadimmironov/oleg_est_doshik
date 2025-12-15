@@ -171,8 +171,26 @@
     const playerWinSrc = playerIsLeft ? LEFT_WIN : RIGHT_WIN;
     const cpuWinSrc = playerIsLeft ? RIGHT_WIN : LEFT_WIN;
 
-    // Адаптивная скорость компьютера (ещё чуть быстрее изначально)
-    let cpuIntervalMs = 600;
+    // Определяем, первый ли это запуск на устройстве (через localStorage)
+    let hasRunBefore = false;
+    try {
+      hasRunBefore = window.localStorage.getItem('goGameHasRun') === '1';
+    } catch (e) {
+      hasRunBefore = false;
+    }
+
+    // Адаптивная стартовая скорость компьютера:
+    // - первый запуск: 150 мс
+    // - второй и далее: 300 мс
+    let cpuIntervalMs = hasRunBefore ? 300 : 150;
+
+    if (!hasRunBefore) {
+      try {
+        window.localStorage.setItem('goGameHasRun', '1');
+      } catch (e) {
+        // игнорируем ошибки localStorage
+      }
+    }
     let lastPlayerClickTime = null;
     let playerIntervalSum = 0;
     let playerIntervalCount = 0;
@@ -458,35 +476,42 @@
             const r = Math.random();
             let factor;
 
-            const cpuLeading = cpuScore > playerScore;
+            const diff = cpuScore - playerScore;
 
-            if (cpuLeading) {
-              // Если бот уже обгоняет по очкам — реже ускоряем, чаще выравниваем или замедляем
-              if (r < 0.2) {
-                // 20% — заметно медленнее игрока
-                factor = 1.4;
-              } else if (r < 0.6) {
-                // 40% — такая же скорость
+            if (diff >= 10) {
+              // Бот сильно впереди — ускоряемся агрессивно,
+              // чтобы удержать отрыв и поддавливать игрока
+              if (r < 0.1) {
+                // 10% — выравниваемся
                 factor = 1.0;
               } else {
-                // 40% — всё ещё быстрее, но не так жёстко
+                // 90% — ещё быстрее
+                factor = 0.25;
+              }
+            } else if (diff >= -3 && diff < 10) {
+              // Счёт рядом — делаем игру «на грани»
+              if (r < 0.3) {
+                // 30% — чуть медленнее
+                factor = 1.2;
+              } else if (r < 0.7) {
+                // 40% — примерно как игрок
+                factor = 1.0;
+              } else {
+                // 30% — быстрее, но не в ноль
                 factor = 0.6;
               }
             } else {
-              // Если бот не лидирует — играем агрессивнее
-              if (r < 0.05) {
-                // 5% — бот медленнее игрока
-                factor = 1.3;
-              } else if (r < 0.15) {
+              // Бот сильно отстаёт — догоняем агрессивно
+              if (r < 0.1) {
                 // 10% — такая же скорость
                 factor = 1.0;
               } else {
-                // 85% — заметно быстрее
+                // 90% — заметно быстрее
                 factor = 0.3;
               }
             }
 
-            cpuIntervalMs = Math.max(90, Math.min(3000, avg * factor));
+            cpuIntervalMs = Math.max(80, Math.min(3000, avg * factor));
             restartCpuTimer();
           }
         }
