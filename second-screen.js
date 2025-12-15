@@ -123,7 +123,7 @@
     layout.appendChild(bottomContainer);
 
     // ----- Игровая логика -----
-    const MAX_SCORE = 50;
+    const MAX_SCORE = 100;
     let playerScore = 0;
     let cpuScore = 0;
     let gameOver = false;
@@ -355,12 +355,8 @@
 
       const btnAgain = makeButton('Играть ещё');
       btnAgain.addEventListener('click', () => {
-        overlay.style.display = 'none';
-        if (window.backToSelect) {
-          window.backToSelect();
-        } else {
-          window.location.reload();
-        }
+        // Полный перезапуск игры
+        window.location.reload();
       });
 
       box.appendChild(btnCourse);
