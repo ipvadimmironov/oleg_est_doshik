@@ -138,8 +138,8 @@
       'assets/secondScreen/R-3.png'
     ];
 
-    const LEFT_WIN = 'assets/secondScreen/L-pobeda.png';
-    const RIGHT_WIN = 'assets/secondScreen/R-pobeda.png';
+    const LEFT_WIN = 'assets/secondScreen/L-Pobeda.png';
+    const RIGHT_WIN = 'assets/secondScreen/R-Pobeda.png';
     const BUTTON_WIN = 'assets/secondScreen/B-Pobeda.png';
 
     // 1 - левый герой выбран на первом экране, 2 - правый; по умолчанию 1
@@ -420,9 +420,15 @@
     updateSideProgress(playerScore, playerIcons, playerProgressInner);
     updateSideProgress(cpuScore, cpuIcons, cpuProgressInner);
 
-    // Тап по кнопке — очко игроку, старт/продление анимации игрока
+    // Тап/клик по кнопке — очко игроку, старт/продление анимации игрока
     bottomImg.style.cursor = 'pointer';
-    bottomImg.addEventListener('click', () => {
+
+    function handleBottomPress(event) {
+      if (event.type === 'touchstart') {
+        // чтобы не было двойного срабатывания (touchstart + click)
+        event.preventDefault();
+      }
+
       if (gameOver) return;
 
       const now = Date.now();
@@ -459,6 +465,11 @@
       addPlayerPoint();
       startPlayerAnimation();
       resetPlayerIdleTimeout();
+    }
+
+    bottomImg.addEventListener('click', handleBottomPress);
+    bottomImg.addEventListener('touchstart', handleBottomPress, {
+      passive: false
     });
 
     // Очки компьютеру — с адаптивным интервалом
