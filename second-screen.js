@@ -173,7 +173,6 @@
 
     // Адаптивная скорость компьютера (чуть быстрее изначально)
     let cpuIntervalMs = 1500;
-    let cpuSpeedMode = null; // 'slower' | 'equal' | 'faster'
     let lastPlayerClickTime = null;
     let playerIntervalSum = 0;
     let playerIntervalCount = 0;
@@ -452,7 +451,9 @@
           playerIntervalSum += dt;
           playerIntervalCount += 1;
 
-          if (!cpuSpeedMode && playerIntervalCount >= 2) {
+          // Периодически пересчитываем среднюю скорость игрока
+          // и заново подбираем скорость компьютера с рандомом.
+          if (playerIntervalCount >= 2) {
             const avg = playerIntervalSum / playerIntervalCount;
             const r = Math.random();
             let factor;
@@ -460,15 +461,12 @@
             if (r < 0.1) {
               // 10% — бот медленнее игрока
               factor = 1.3;
-              cpuSpeedMode = 'slower';
             } else if (r < 0.3) {
               // 20% — такая же скорость
               factor = 1.0;
-              cpuSpeedMode = 'equal';
             } else {
               // 70% — заметно быстрее
               factor = 0.4;
-              cpuSpeedMode = 'faster';
             }
 
             cpuIntervalMs = Math.max(120, Math.min(4000, avg * factor));
