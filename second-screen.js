@@ -478,40 +478,40 @@
 
             const diff = cpuScore - playerScore;
 
-            if (diff >= 10) {
+            if (diff >= 5) {
               // Бот сильно впереди — ускоряемся агрессивно,
               // чтобы удержать отрыв и поддавливать игрока
               if (r < 0.1) {
                 // 10% — выравниваемся
-                factor = 1.0;
+                factor = 0.9;
               } else {
                 // 90% — ещё быстрее
                 factor = 0.25;
               }
-            } else if (diff >= -3 && diff < 10) {
+            } else if (diff >= -3 && diff < 5) {
               // Счёт рядом — делаем игру «на грани»
               if (r < 0.3) {
                 // 30% — чуть медленнее
                 factor = 1.2;
               } else if (r < 0.7) {
                 // 40% — примерно как игрок
-                factor = 1.0;
+                factor = 0.8;
               } else {
                 // 30% — быстрее, но не в ноль
-                factor = 0.6;
+                factor = 0.4;
               }
             } else {
               // Бот сильно отстаёт — догоняем агрессивно
-              if (r < 0.1) {
+              if (r < 0.3) {
                 // 10% — такая же скорость
-                factor = 1.0;
+                factor = 0.8;
               } else {
                 // 90% — заметно быстрее
-                factor = 0.3;
+                factor = 0.1;
               }
             }
 
-            cpuIntervalMs = Math.max(80, Math.min(3000, avg * factor));
+            cpuIntervalMs = Math.max(10, Math.min(3000, avg * factor));
             restartCpuTimer();
           }
         }
