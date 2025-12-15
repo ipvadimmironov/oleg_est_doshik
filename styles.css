@@ -45,6 +45,9 @@ button:focus {
   width: 1080px;
   height: 1920px;
   background-color: #000;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
   overflow: hidden;
 }
 
@@ -99,7 +102,7 @@ button:focus {
   display: none;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.2);
   z-index: 1000;
   text-align: center;
   padding: 16px;

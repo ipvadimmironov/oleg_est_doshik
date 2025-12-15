@@ -8,7 +8,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <meta name="format-detection" content="telephone=no" />
-    <link rel="stylesheet" href="styles.css?v=1" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div id="orientation-overlay" class="overlay overlay--orientation">
@@ -38,13 +38,7 @@
       </div>
     </div>
 
-    <script>
-      (function () {
-        var s = document.createElement('script');
-        s.src = 'game.js?v=' + Date.now();
-        document.body.appendChild(s);
-      })();
-    </script>
+    <script src="game.js"></script>
   </body>
 </html>
 

@@ -1,8 +1,7 @@
 (function () {
-  const SECOND_CACHE_BUST = Date.now();
-
   function withCacheBust2(path) {
-    return `${path}?v=${SECOND_CACHE_BUST}`;
+    // Кеширование снова включено — просто возвращаем путь.
+    return path;
   }
 
   function createImage(src, className) {

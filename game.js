@@ -2,16 +2,15 @@
 const VIRTUAL_WIDTH = 1080;
 const VIRTUAL_HEIGHT = 1920;
 
-// Конфиг картинок (из папки assets/firstScreen):
+// Конфиг картинок (из папки assets/firstScreen и secondScreen):
 // src — путь, duration — сколько мс кадр показывается (для анимаций)
-const CACHE_BUST = Date.now();
-
 function withCacheBust(path) {
-  return `${path}?v=${CACHE_BUST}`;
+  // Кеширование снова включено, поэтому просто возвращаем путь без query-param.
+  return path;
 }
 
 const IMAGE_CONFIG = [
-  { src: withCacheBust('assets/firstScreen/background.png'), duration: 0 },
+  { src: withCacheBust('assets/firstScreen/loading.png'), duration: 0 },
   { src: withCacheBust('assets/firstScreen/back1.png'), duration: 0 },
   { src: withCacheBust('assets/firstScreen/back2.png'), duration: 750 },
   { src: withCacheBust('assets/firstScreen/back3.png'), duration: 1250 },
@@ -32,7 +31,21 @@ const IMAGE_CONFIG = [
   { src: withCacheBust('assets/firstScreen/back-selected-2-6.png'), duration: 50 },
   { src: withCacheBust('assets/firstScreen/back-selected-2-7.png'), duration: 50 },
   // gif after too many swipes
-  { src: withCacheBust('assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif'), duration: 0 }
+  { src: withCacheBust('assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif'), duration: 0 },
+  // Изображения второго экрана
+  { src: withCacheBust('assets/secondScreen/L-1.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/L-2.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/L-3.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/L-pobeda.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/R-1.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/R-2.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/R-3.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/R-pobeda.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/b-1.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/b-2.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/B-Pobeda.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/l-f.png'), duration: 0 },
+  { src: withCacheBust('assets/secondScreen/r-f.png'), duration: 0 }
 ];
 
 // Прямоугольники клика по бойцам в системе координат 1080x1920
@@ -135,8 +148,19 @@ function preloadImages(files, onProgress, onDone) {
 
 function showLoader(show) {
   const loader = $('loader-overlay');
+  const canvas = $('game-canvas');
   if (!loader) return;
   loader.style.display = show ? 'flex' : 'none';
+
+  if (canvas) {
+    if (show) {
+      canvas.style.backgroundImage = `url('${withCacheBust(
+        'assets/firstScreen/loading.png'
+      )}')`;
+    } else {
+      canvas.style.backgroundImage = 'none';
+    }
+  }
 }
 
 function setScreen(name) {
