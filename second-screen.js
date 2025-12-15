@@ -171,8 +171,8 @@
     const playerWinSrc = playerIsLeft ? LEFT_WIN : RIGHT_WIN;
     const cpuWinSrc = playerIsLeft ? RIGHT_WIN : LEFT_WIN;
 
-    // Адаптивная скорость компьютера (чуть быстрее изначально)
-    let cpuIntervalMs = 1500;
+    // Адаптивная скорость компьютера (ещё чуть быстрее изначально)
+    let cpuIntervalMs = 600;
     let lastPlayerClickTime = null;
     let playerIntervalSum = 0;
     let playerIntervalCount = 0;
@@ -458,18 +458,18 @@
             const r = Math.random();
             let factor;
 
-            if (r < 0.1) {
-              // 10% — бот медленнее игрока
+            if (r < 0.05) {
+              // 5% — бот медленнее игрока
               factor = 1.3;
-            } else if (r < 0.3) {
-              // 20% — такая же скорость
+            } else if (r < 0.15) {
+              // 10% — такая же скорость
               factor = 1.0;
             } else {
-              // 70% — заметно быстрее
-              factor = 0.4;
+              // 85% — заметно быстрее
+              factor = 0.3;
             }
 
-            cpuIntervalMs = Math.max(120, Math.min(4000, avg * factor));
+            cpuIntervalMs = Math.max(90, Math.min(3000, avg * factor));
             restartCpuTimer();
           }
         }
