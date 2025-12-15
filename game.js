@@ -20,16 +20,16 @@ const IMAGE_CONFIG = [
   { src: withCacheBust('assets/firstScreen/back-selected-1-3.png'), duration: 150 },
   { src: withCacheBust('assets/firstScreen/back-selected-1-4.png'), duration: 50 },
   { src: withCacheBust('assets/firstScreen/back-selected-1-5.png'), duration: 50 },
-  { src: withCacheBust('assets/firstScreen/back-selected-1-6.png'), duration: 50 },
-  { src: withCacheBust('assets/firstScreen/back-selected-1-7.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-6.png'), duration: 150 },
+  { src: withCacheBust('assets/firstScreen/back-selected-1-7.png'), duration: 350 },
   // fighter 2
   { src: withCacheBust('assets/firstScreen/back-selected-2-1.png'), duration: 50 },
   { src: withCacheBust('assets/firstScreen/back-selected-2-2.png'), duration: 150 },
   { src: withCacheBust('assets/firstScreen/back-selected-2-3.png'), duration: 150 },
   { src: withCacheBust('assets/firstScreen/back-selected-2-4.png'), duration: 50 },
   { src: withCacheBust('assets/firstScreen/back-selected-2-5.png'), duration: 50 },
-  { src: withCacheBust('assets/firstScreen/back-selected-2-6.png'), duration: 50 },
-  { src: withCacheBust('assets/firstScreen/back-selected-2-7.png'), duration: 50 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-6.png'), duration: 150 },
+  { src: withCacheBust('assets/firstScreen/back-selected-2-7.png'), duration: 350 },
   // gif after too many swipes
   { src: withCacheBust('assets/firstScreen/Girl_Shouts_BAN_Man_Covers_Ears.gif'), duration: 0 },
   // Изображения второго экрана
