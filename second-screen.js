@@ -98,7 +98,7 @@
     );
 
     const bottomImg = createImage(
-      'assets/secondScreen/b-1.png',
+      'assets/secondScreen/B-1.png',
       'second-slot second-slot--bottom'
     );
 
@@ -122,8 +122,8 @@
     let buttonState = 0; // 0 -> b-1, 1 -> b-2
 
     const BUTTON_FRAMES = [
-      'assets/secondScreen/b-1.png',
-      'assets/secondScreen/b-2.png'
+      'assets/secondScreen/B-1.png',
+      'assets/secondScreen/B-2.png'
     ];
 
     const LEFT_FRAMES = [
