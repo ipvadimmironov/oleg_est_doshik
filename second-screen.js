@@ -97,14 +97,30 @@
       'second-slot second-slot--right'
     );
 
+    // Контейнер для нижней кнопки и её hit-областей
+    const bottomContainer = document.createElement('div');
+    bottomContainer.className = 'second-slot second-slot--bottom';
+
     const bottomImg = createImage(
       'assets/secondScreen/B-1.png',
-      'second-slot second-slot--bottom'
+      'second-bottom-img'
     );
+
+    const bottomHitLeft = document.createElement('div');
+    bottomHitLeft.className =
+      'second-bottom-hit second-bottom-hit--left';
+
+    const bottomHitRight = document.createElement('div');
+    bottomHitRight.className =
+      'second-bottom-hit second-bottom-hit--right';
+
+    bottomContainer.appendChild(bottomImg);
+    bottomContainer.appendChild(bottomHitLeft);
+    bottomContainer.appendChild(bottomHitRight);
 
     layout.appendChild(leftImg);
     layout.appendChild(rightImg);
-    layout.appendChild(bottomImg);
+    layout.appendChild(bottomContainer);
 
     // ----- Игровая логика -----
     const MAX_SCORE = 50;
@@ -421,8 +437,6 @@
     updateSideProgress(cpuScore, cpuIcons, cpuProgressInner);
 
     // Тап/клик по кнопке — очко игроку, старт/продление анимации игрока
-    bottomImg.style.cursor = 'pointer';
-
     function handleBottomPress(event) {
       if (event.type === 'touchstart') {
         // чтобы не было двойного срабатывания (touchstart + click)
@@ -443,14 +457,14 @@
             const r = Math.random();
             let factor;
 
-            if (r < 0.3) {
-              factor = 1.3; // медленнее
+            if (r < 0.2) {
+              factor = 1.3; // медленнее (20%)
               cpuSpeedMode = 'slower';
-            } else if (r < 0.6) {
-              factor = 1.0; // такой же
+            } else if (r < 0.4) {
+              factor = 1.0; // такой же (20%)
               cpuSpeedMode = 'equal';
             } else {
-              factor = 0.7; // быстрее
+              factor = 0.5; // значительно быстрее (60%)
               cpuSpeedMode = 'faster';
             }
 
@@ -467,8 +481,12 @@
       resetPlayerIdleTimeout();
     }
 
-    bottomImg.addEventListener('click', handleBottomPress);
-    bottomImg.addEventListener('touchstart', handleBottomPress, {
+    bottomHitLeft.addEventListener('click', handleBottomPress);
+    bottomHitRight.addEventListener('click', handleBottomPress);
+    bottomHitLeft.addEventListener('touchstart', handleBottomPress, {
+      passive: false
+    });
+    bottomHitRight.addEventListener('touchstart', handleBottomPress, {
       passive: false
     });
 

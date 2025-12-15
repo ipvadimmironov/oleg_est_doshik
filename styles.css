@@ -261,6 +261,29 @@ button:focus {
   object-fit: cover;
 }
 
+.second-bottom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.second-bottom-hit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  cursor: pointer;
+}
+
+.second-bottom-hit--left {
+  left: 0;
+}
+
+.second-bottom-hit--right {
+  right: 0;
+}
+
 .second-slot--left {
   left: 2.5926%; /* 28 / 1080 */
   top: 12.5%; /* под более высокой полоской и прогрессом */
